@@ -1,4 +1,11 @@
-package experiment;
+package textanalysis.experiment;
 
-public class ExperimentResult {
+public record ExperimentResult(
+        String algorithm,
+        int size,
+        String caseType,
+        double averageNanoseconds,
+        double averageCharacterComparisons,
+        double averageHashComparisons
+) {
 }

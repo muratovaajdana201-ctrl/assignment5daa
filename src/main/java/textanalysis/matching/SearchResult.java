@@ -1,4 +1,10 @@
-package matching;
+package textanalysis.matching;
 
-public class SearchResult {
+import java.util.List;
+
+public record SearchResult(
+        List<Integer> indices,
+        long characterComparisons,
+        long hashComparisons
+) {
 }

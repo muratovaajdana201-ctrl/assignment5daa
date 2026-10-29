@@ -63,7 +63,7 @@ public final class BenchmarkRunner {
         for (int size : sizes) {
             String text = randomString(size, random);
             String presentPattern = text.substring(size / 2, size / 2 + 20);
-            String absentPattern = "zzzzzzzzzzzzzzzzzzzz";
+            String absentPattern = "{".repeat(20);
 
             addMatchingRow(lines, "Naive", size, "present",
                     text, presentPattern, NaiveSearch::searchWithStats);
@@ -100,6 +100,12 @@ public final class BenchmarkRunner {
         long totalChars = 0;
         long totalHashes = 0;
 
+
+        for (int i = 0; i < 3; i++) {
+            function.search(text, pattern);
+        }
+
+
         for (int run = 0; run < RUNS; run++) {
             long start = System.nanoTime();
             SearchResult result = function.search(text, pattern);
@@ -131,6 +137,9 @@ public final class BenchmarkRunner {
             String text = randomString(size, random);
             int[] suffixArray = SimpleSuffixArray.build(text);
 
+            for (int i = 0; i < 3; i++) {
+                Kasai.buildLCP(text, suffixArray);
+            }
             long totalTime = 0;
 
             for (int run = 0; run < RUNS; run++) {
@@ -155,6 +164,11 @@ public final class BenchmarkRunner {
     }
 
     private static double averageTime(Runnable operation) {
+
+        for (int i = 0; i < 3; i++) {
+            operation.run();
+        }
+
         long total = 0;
 
         for (int run = 0; run < RUNS; run++) {
@@ -166,6 +180,7 @@ public final class BenchmarkRunner {
         }
 
         return (double) total / RUNS;
+
     }
 
     private static String randomString(int length, Random random) {
